@@ -1,0 +1,22 @@
+{
+  "name": "charisma",
+  "version": "1.0.0",
+  "description": "A very minimal comment server for static sites",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Raphael Kabo",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "express-validator": "^6.4.0",
+    "jdenticon": "^2.2.0",
+    "lowdb": "^1.0.0",
+    "marked": "^0.8.0",
+    "nanoid": "^2.1.11",
+    "nodemon": "^2.0.2",
+    "server": "^1.0.26"
+  }
+}
