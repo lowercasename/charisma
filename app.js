@@ -122,10 +122,14 @@ app.get('/fetch/:slug', (req, res) => {
     .chain()
     .filter({ slug: slug })
     .value()
-  if (comments) {
+  if (comments.length > 0) {
     res.status(200).send({
       status: 'ok',
       comments: comments
+    })
+  } else {
+    res.status(400).send({
+      status: 'not-found'
     })
   }
 })
