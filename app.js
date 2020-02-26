@@ -1,4 +1,5 @@
 const express = require('express')
+const https = require('https')
 const app = express()
 const port = 1974
 const cors = require('cors')
@@ -130,5 +131,8 @@ app.get('/fetch/:slug', (req, res) => {
   }
 })
 
-
-app.listen(port, () => console.log(`Charisma commenting system listening on port ${port}!`))
+https.createServer({
+  key: fs.readFileSync('server.key'),
+  cert: fs.readFileSync('server.cert')
+}, app)
+  .listen(port, () => console.log(`Charisma commenting system listening on port ${port}!`))
