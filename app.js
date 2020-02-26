@@ -122,16 +122,15 @@ app.get('/fetch/:slug', (req, res) => {
     .chain()
     .filter({ slug: slug })
     .value()
-  if (comments.length > 0) {
+  if (comments.length === 0) {
     res.status(200).send({
-      status: 'ok',
-      comments: comments
-    })
-  } else {
-    res.status(204).send({
       status: 'not-found'
     })
   }
+  res.status(200).send({
+    status: 'ok',
+    comments: comments
+  })
 })
 
 app.listen(port, () => console.log(`Charisma commenting system listening on port ${port}!`))
