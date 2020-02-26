@@ -128,7 +128,7 @@ app.get('/fetch/:slug', (req, res) => {
       comments: comments
     })
   } else {
-    res.status(200).send({
+    res.status(204).send({
       status: 'not-found'
     })
   }
