@@ -62,6 +62,7 @@ app.post('/create', [
   check('name').isLength({ min: 3, max: 200 }).trim().escape(),
   check('content').isLength({ min: 3 }).trim().escape()
 ], (req, res) => {
+  console.log("Adding comment.")
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     console.log("Validation error!")
@@ -115,6 +116,7 @@ app.post('/create', [
 })
 
 app.get('/fetch/:slug', (req, res) => {
+  console.log("Fetching comments.")
   const slug = req.params.slug
   const comments = db.get('comments')
     .chain()
