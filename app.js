@@ -123,7 +123,7 @@ app.get('/fetch/:slug', (req, res) => {
     .filter({ slug: slug })
     .value()
   if (comments.length === 0) {
-    res.status(200).send({
+    return res.status(200).send({
       status: 'not-found'
     })
   }
