@@ -68,13 +68,42 @@ app.post('/create', [
     console.log("Validation error!")
     return res.status(200).json({ errors: errors.array() });
   }
-  const { name, content, slug } = req.body
+  const { name, content, slug, parent } = req.body
   const parsedContent = marked(content)
   const date = Date.now()
   const id = nanoid()
 
   const avatarSize = 60
-  const avatarSvg = jdenticon.toSvg(name, avatarSize);
+  const avatarSvg = jdenticon.toSvg(name, avatarSize)
+
+  // Check for honeypotted replies - those go in the honeypot database/log
+  if (parent.length && !req.body.password) {
+    // This is a genuine comment reply!
+    let replies = db.get('comments')
+      .find({ id: parent })
+      .get('replies')
+      .value()
+    replies.push({
+      id: id,
+      date: date,
+      name: name,
+      content: parsedContent,
+      avatar: avatarSvg,
+    })
+    db.get('comments')
+      .find({ id: parent })
+      .assign({ replies })
+      .write();
+    return res.status(201).send({
+      status: 'ok',
+      id: id,
+      date: date,
+      name: name,
+      content: parsedContent,
+      avatar: avatarSvg,
+      parentComment: parent
+    })
+  }
 
   if (req.body.password) {
     honeypot.get('comments')
@@ -84,10 +113,11 @@ app.post('/create', [
         slug: slug,
         name: name,
         content: parsedContent,
-        avatar: avatarSvg
+        avatar: avatarSvg,
+        parent: parent
       })
       .write()
-    res.status(500).send({
+    return res.status(500).send({
       status: 'honeypot'
     })
   } else {
@@ -99,17 +129,18 @@ app.post('/create', [
           slug: slug,
           name: name,
           content: parsedContent,
-          avatar: avatarSvg
+          avatar: avatarSvg,
+          replies: []
         })
         .write()
-      res.status(201).send({
+      return res.status(201).send({
         status: 'ok',
         id: id,
         date: date,
         slug: slug,
         name: name,
         content: parsedContent,
-        avatar: avatarSvg
+        avatar: avatarSvg,
       })
     }
   }
