@@ -15,7 +15,7 @@
     "jdenticon": "^2.2.0",
     "lowdb": "^1.0.0",
     "marked": "^0.8.0",
-    "nanoid": "^2.1.11",
+    "nanoid": "^3.1.31",
     "nodemon": "^2.0.2",
     "server": "^1.0.26"
   }
